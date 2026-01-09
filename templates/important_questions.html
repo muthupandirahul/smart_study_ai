@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel">
+    <h2>⭐ Important Semester Questions</h2>
+    <a href="{{ url_for('semester_prep') }}" class="btn" style="margin-bottom: 20px; background: #999;">&larr; Back</a>
+
+    {% for subject in subjects %}
+    <div class="card">
+        <h3 style="color: var(--primary);">{{ subject.name }}</h3>
+
+        <div style="margin-bottom: 15px;">
+            <strong>📌 5-Mark Questions (Short Notes)</strong>
+            <ul style="margin-top: 5px;">
+                {% for topic in subject.topics[:2] %}
+                <li>Explain the concept of <b>{{ topic.name }}</b> with a diagram.</li>
+                {% endfor %}
+                <li>Write a short note on recent trends in {{ subject.name }}.</li>
+            </ul>
+        </div>
+
+        <div>
+            <strong>📌 10-Mark Questions (Detailed)</strong>
+            <ul style="margin-top: 5px;">
+                {% for topic in subject.topics[2:] %}
+                <li>Discuss <b>{{ topic.name }}</b> in detail with its advantages and disadvantages.</li>
+                {% endfor %}
+                {% if not subject.topics[2:] %}
+                <li>Describe the architecture and working principles of {{ subject.name }}.</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

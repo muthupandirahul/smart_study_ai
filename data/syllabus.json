@@ -1,0 +1,115 @@
+{
+    "subjects": [
+        {
+            "id": "cc201",
+            "name": "Cloud Computing",
+            "topics": [
+                {
+                    "id": "cc1",
+                    "name": "Cloud Architecture & Service Models (IaaS, PaaS, SaaS)",
+                    "difficulty": "Moderate"
+                },
+                {
+                    "id": "cc2",
+                    "name": "Virtualization Technology",
+                    "difficulty": "Moderate"
+                },
+                {
+                    "id": "cc3",
+                    "name": "Cloud Security & Privacy",
+                    "difficulty": "Hard"
+                }
+            ]
+        },
+        {
+            "id": "ai202",
+            "name": "Artificial Intelligence & Machine Learning",
+            "topics": [
+                {
+                    "id": "ai1",
+                    "name": "Supervised vs Unsupervised Learning",
+                    "difficulty": "Moderate"
+                },
+                {
+                    "id": "ai2",
+                    "name": "Neural Networks & Deep Learning",
+                    "difficulty": "Hard"
+                },
+                {
+                    "id": "ai3",
+                    "name": "Reinforcement Learning",
+                    "difficulty": "Hard"
+                }
+            ]
+        },
+        {
+            "id": "java203",
+            "name": "Advanced Java Programming",
+            "topics": [
+                {
+                    "id": "j1",
+                    "name": "J2EE Framework & Servlets",
+                    "difficulty": "Moderate"
+                },
+                {
+                    "id": "j2",
+                    "name": "Spring Boot Basics",
+                    "difficulty": "Hard"
+                },
+                {
+                    "id": "j3",
+                    "name": "Hibernate & ORM",
+                    "difficulty": "Hard"
+                }
+            ]
+        },
+        {
+            "id": "lab204",
+            "name": "Java Programming Lab",
+            "topics": [
+                {
+                    "id": "lab1",
+                    "name": "JDBC Connectivity",
+                    "difficulty": "Moderate"
+                },
+                {
+                    "id": "lab2",
+                    "name": "Multi-threading & Socket Programming",
+                    "difficulty": "Hard"
+                }
+            ]
+        },
+        {
+            "id": "aos205",
+            "name": "Advanced Operating Systems",
+            "topics": [
+                {
+                    "id": "os1",
+                    "name": "Distributed Systems",
+                    "difficulty": "Hard"
+                },
+                {
+                    "id": "os2",
+                    "name": "Real-time Operating Systems",
+                    "difficulty": "Moderate"
+                }
+            ]
+        },
+        {
+            "id": "bio206",
+            "name": "Bio Entrepreneurship",
+            "topics": [
+                {
+                    "id": "bio1",
+                    "name": "Business Models in Biotech",
+                    "difficulty": "Easy"
+                },
+                {
+                    "id": "bio2",
+                    "name": "IPR & Patenting",
+                    "difficulty": "Moderate"
+                }
+            ]
+        }
+    ]
+}

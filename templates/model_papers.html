@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel">
+    <h2>Model Question Papers</h2>
+    <a href="{{ url_for('semester_prep') }}" class="btn" style="margin-bottom: 20px;">&larr; Back</a>
+
+    {% for subject in subjects %}
+    <div class="card">
+        <h3>{{ subject.name }}</h3>
+        <ul style="padding-left: 20px;">
+            <li><a href="#" style="color: var(--accent);">2024 Semester Question Paper</a></li>
+            <li><a href="#" style="color: var(--accent);">2023 Semester Question Paper</a></li>
+            <li><a href="#" style="color: var(--accent);">Important 5-mark Questions List</a></li>
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

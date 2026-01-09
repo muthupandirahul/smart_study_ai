@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel">
+    <h2>📖 Full Syllabus Review</h2>
+    <p>Select a topic to start reading.</p>
+    <a href="{{ url_for('semester_prep') }}" class="btn" style="margin-bottom: 20px; background: #64748b;">&larr;
+        Back</a>
+
+    {% for subject in subjects %}
+    <div class="card">
+        <h3>{{ subject.name }}</h3>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            {% for topic in subject.topics %}
+            <a href="{{ url_for('learn', topic_id=topic.id) }}" class="btn"
+                style="background: var(--card-bg); color: var(--text-dark); border: 1px solid var(--border-color);">
+                {{ topic.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel">
+    <h1>Hello, {{ user.name }} 👋</h1>
+    <p>Roll No: {{ user.roll_number }}</p>
+
+    <div class="card">
+        <h3>Course Progress</h3>
+        <div class="progress-track">
+            <div class="progress-fill" style="width: {{ percent }}%;"></div>
+        </div>
+        <p>{{ percent }}% Syllabus Completed</p>
+    </div>
+
+    <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h2>🎓 Semester Exam Mode</h2>
+                <p>Prepare for your final Sem 2 Exams with Model Papers & AI Coaching.</p>
+            </div>
+            <a href="{{ url_for('semester_prep') }}" class="btn"
+                style="background: white; color: #764ba2; font-weight: bold;">Enter Prep Mode ➔</a>
+        </div>
+    </div>
+
+    <h2>Your Subjects</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+        {% for subject in subjects %}
+        <div class="card">
+            <h3>{{ subject.name }}</h3>
+            <ul style="list-style: none; padding: 0;">
+                {% for topic in subject.topics %}
+                <li style="margin: 10px 0; display: flex; justify-content: space-between; align-items: center;">
+                    <span>{{ topic.name }}</span>
+                    {% if topic.id in progress.get('topics_completed', []) %}
+                    <span style="color: #4ade80;">✔ Done</span>
+                    {% else %}
+                    <a href="{{ url_for('learn', topic_id=topic.id) }}" class="btn"
+                        style="padding: 5px 10px; font-size: 0.8rem;">Start</a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel">
+    <h2>Topic Quiz</h2>
+    <div id="quiz-container">
+        {% for q in questions %}
+        <div class="card question-card" id="q-{{ loop.index }}"
+            style="display: {% if loop.first %}block{% else %}none{% endif %};">
+            <h3>Question {{ loop.index }} of {{ questions|length }}</h3>
+
+            {% if q.image %}
+            <div style="text-align: center; margin-bottom: 15px;">
+                <img src="{{ q.image }}" alt="Question Image"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+            </div>
+            {% endif %}
+
+            <p style="font-size: 1.2rem;">{{ q.question }}</p>
+
+            <div class="options">
+                {% for opt in q.options %}
+                <button class="option-btn" onclick="selectOption(this, '{{ q.answer }}')">{{ opt }}</button>
+                {% endfor %}
+            </div>
+
+            <div style="margin-top: 20px;">
+                {% if not loop.last %}
+                <button class="btn" onclick="nextQuestion({{ loop.index }})">Next ></button>
+                {% else %}
+                <button class="btn" style="background: #16a34a;" onclick="submitQuiz()">Submit Test</button>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    let score = 0;
+    const total = {{ questions| length }};
+    const topicId = "{{ topic_id }}";
+
+    function selectOption(btn, correctAnswer) {
+        // Remove active class from siblings
+        let parent = btn.parentElement;
+        let siblings = parent.getElementsByClassName('option-btn');
+        for (let sib of siblings) {
+            sib.classList.remove('selected');
+            sib.disabled = true; // Lock answer
+            if (sib.textContent.trim() === correctAnswer) {
+                sib.style.borderColor = "#059669";
+                sib.style.background = "#065f46";
+                sib.style.color = "white";
+            } else if (sib === btn && sib.textContent.trim() !== correctAnswer) {
+                sib.style.borderColor = "#dc2626";
+                sib.style.background = "#7f1d1d";
+                sib.style.color = "white";
+            }
+        }
+        btn.classList.add('selected');
+
+        if (btn.textContent.trim() === correctAnswer) {
+            score++;
+        }
+    }
+
+    function nextQuestion(currentIndex) {
+        document.getElementById(`q-${currentIndex}`).style.display = 'none';
+        document.getElementById(`q-${currentIndex + 1}`).style.display = 'block';
+    }
+
+    function submitQuiz() {
+        fetch('/submit_quiz', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                topic_id: topicId,
+                score: score,
+                total: total
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                window.location.href = data.redirect;
+            });
+    }
+</script>
+{% endblock %}

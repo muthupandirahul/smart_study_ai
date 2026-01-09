@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel">
+    <div style="display: flex; justify-content: space-between;">
+        <h2>{{ topic_name }}</h2>
+        <a href="{{ url_for('dashboard') }}" class="btn" style="background: #475569;">Back</a>
+    </div>
+
+    <!-- AI Content Area -->
+    <div class="card" style="margin-top: 20px;">
+        <h3>AI Explanation</h3>
+        <p>{{ content.explanation }}</p>
+
+        <h4>Key Points:</h4>
+        <ul>
+            {% for point in content.key_points %}
+            <li>{{ point }}</li>
+            {% endfor %}
+        </ul>
+
+        <div style="background: #334155; padding: 15px; border-radius: 8px; margin-top: 15px;">
+            <strong>💡 Example:</strong>
+            <p>{{ content.example }}</p>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <button id="markCompleteBtn" class="btn" onclick="markComplete('{{ topic_id }}')">✅ Mark as Understood</button>
+        <a href="{{ url_for('quiz', topic_id=topic_id) }}" class="btn"
+            style="background: #ef4444; margin-left: 10px;">📝 Take Quiz</a>
+    </div>
+</div>
+
+<script>
+    function markComplete(topicId) {
+        fetch(`/mark_complete/${topicId}`, { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                document.getElementById('markCompleteBtn').innerHTML = "Completed!";
+                document.getElementById('markCompleteBtn').disabled = true;
+            });
+    }
+</script>
+{% endblock %}

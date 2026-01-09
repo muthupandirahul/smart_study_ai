@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel">
+    <h1>⚙️ Settings & Configuration</h1>
+    <p>Manage courses and add content for other departments/years.</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
+
+        <!-- Quiz Configuration -->
+        <div class="card" style="border-left-color: var(--highlight);">
+            <h3>🧠 Quiz Difficulty</h3>
+            <p>Set the global difficulty level for AI generated questions.</p>
+            <form id="configForm">
+                <select id="diffLevel"
+                    style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid var(--border-color); border-radius: 5px; background: var(--input-bg); color: white;">
+                    <option value="Easy">Easy (Beginner)</option>
+                    <option value="Moderate" selected>Moderate (Standard)</option>
+                    <option value="Hard">Hard (Advanced)</option>
+                </select>
+                <button type="submit" class="btn" style="width: 100%;">Save Preference</button>
+            </form>
+        </div>
+
+        <!-- Add Subject Form -->
+        <div class="card">
+            <h3>Add New Subject</h3>
+            <form id="addSubjectForm">
+                <input type="text" id="subjectId" placeholder="Subject ID (e.g. bio101)" required
+                    style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid var(--border-color); background: var(--input-bg); color: white;">
+                <input type="text" id="subjectName" placeholder="Subject Name (e.g. Microbiology)" required
+                    style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid var(--border-color); background: var(--input-bg); color: white;">
+
+                <h4 style="margin-top: 15px;">Initial Topic</h4>
+                <input type="text" id="topicName" placeholder="Topic Name (e.g. Intro to Cells)" required
+                    style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid var(--border-color); background: var(--input-bg); color: white;">
+
+                <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Add Subject</button>
+            </form>
+        </div>
+
+        <!-- Info Panel -->
+        <div class="card">
+            <h3>Department Profile</h3>
+            <p><strong>Current Dept:</strong> MSc Computer Science</p>
+            <p><strong>Academic Year:</strong> 2025-2026</p>
+            <hr>
+            <p style="font-size: 0.9rem; color: #94a3b8;">
+                Use this form to dynamically add new subjects to the syllabus.
+                These will immediately appear on the Dashboard for all students.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('configForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const diff = document.getElementById('diffLevel').value;
+
+        fetch('/settings/update_difficulty', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ difficulty: diff })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert('Difficulty Level Updated to ' + diff);
+            });
+    });
+
+    document.getElementById('addSubjectForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const data = {
+            id: document.getElementById('subjectId').value,
+            name: document.getElementById('subjectName').value,
+            topic: document.getElementById('topicName').value
+        };
+
+        fetch('/add_subject', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Subject Added Successfully!');
+                    window.location.href = "{{ url_for('dashboard') }}";
+                } else {
+                    alert('Error adding subject');
+                }
+            });
+    });
+</script>
+{% endblock %}

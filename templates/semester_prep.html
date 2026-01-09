@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel">
+    <h1>Semester Exam Preparation</h1>
+    <p>MSc Computer Science - Semester 2</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
+        <!-- Option 1: Important Questions -->
+        <div class="card" style="text-align: center;">
+            <div style="font-size: 3rem;">⭐</div>
+            <h3>Important Questions</h3>
+            <p>Key 5-mark and 10-mark questions for all subjects.</p>
+            <a href="{{ url_for('important_questions') }}" class="btn">View List</a>
+        </div>
+
+        <!-- Option 2: Full Syllabus Revision -->
+        <div class="card" style="text-align: center;">
+            <div style="font-size: 3rem;">📖</div>
+            <h3>Full Syllabus Revision</h3>
+            <p>Review all core topics before the exam.</p>
+            <a href="{{ url_for('topic_list') }}" class="btn">Start Revision</a>
+        </div>
+
+        <!-- Option 3: Full Mock Exam -->
+        <div class="card"
+            style="text-align: center; grid-column: span 2; background: #3f2c00; border: 2px solid #ca8a04;">
+            <h2 style="color: #fde047;">🏆 Final Mock Semester Exam</h2>
+            <p>Take a complete 3-hour equivalent mock test (50 Questions) covering all subjects.</p>
+            <a href="{{ url_for('mock_exam') }}" class="btn"
+                style="background: #ca8a04; color: black; font-weight: bold;">Start Final Exam</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

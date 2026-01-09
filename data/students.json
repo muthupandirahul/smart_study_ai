@@ -1,0 +1,12 @@
+{
+    "student": {
+        "name": "Alex Student",
+        "roll_number": "1001",
+        "email": "alex@college.edu"
+    },
+    "demo": {
+        "name": "Demo User",
+        "roll_number": "12345",
+        "email": "demo@college.edu"
+    }
+}

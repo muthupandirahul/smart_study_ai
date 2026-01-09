@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel login-box">
+    <h2>Welcome Back!</h2>
+    <p>Please login to your study portal</p>
+
+    {% if error %}
+    <p style="color: #ef4444;">{{ error }}</p>
+    {% endif %}
+
+    <form action="{{ url_for('login') }}" method="POST">
+        <input type="text" name="username" placeholder="Username" required
+            style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid #444; color: white;">
+        <input type="password" name="password" placeholder="Password" required
+            style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid #444; color: white;">
+        <button type="submit" class="btn" style="width: 100%; padding: 14px; font-weight: bold;">Login</button>
+    </form>
+
+    <p style="text-align: center; margin-top: 25px; color: #888;">
+        Don't have an account? <a href="{{ url_for('register') }}" style="color: #6366f1;">Register here</a>
+    </p>
+</div>
+{% endblock %}
