@@ -25,23 +25,31 @@
     </div>
 
     <h2>Your Subjects</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
         {% for subject in subjects %}
         <div class="card">
-            <h3>{{ subject.name }}</h3>
-            <ul style="list-style: none; padding: 0;">
-                {% for topic in subject.topics %}
-                <li style="margin: 10px 0; display: flex; justify-content: space-between; align-items: center;">
-                    <span>{{ topic.name }}</span>
-                    {% if topic.id in progress.get('topics_completed', []) %}
-                    <span style="color: #4ade80;">✔ Done</span>
-                    {% else %}
-                    <a href="{{ url_for('learn', topic_id=topic.id) }}" class="btn"
-                        style="padding: 5px 10px; font-size: 0.8rem;">Start</a>
-                    {% endif %}
-                </li>
-                {% endfor %}
-            </ul>
+            <h3 style="border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px;">{{ subject.name }}
+            </h3>
+            {% for unit in subject.units %}
+            <div style="margin-bottom: 15px;">
+                <h4 style="color: #4a5568; margin-bottom: 8px; font-size: 0.95rem;">Unit {{ loop.index }}: {{ unit.name
+                    }}</h4>
+                <ul style="list-style: none; padding: 0; margin-left: 10px;">
+                    {% for topic in unit.topics %}
+                    <li
+                        style="margin: 8px 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;">
+                        <span style="flex: 1; padding-right: 10px;">{{ topic.name }}</span>
+                        {% if topic.id in progress.get('topics_completed', []) %}
+                        <span style="color: #4ade80; font-size: 0.8rem; white-space: nowrap;">✔ Done</span>
+                        {% else %}
+                        <a href="{{ url_for('learn', topic_id=topic.id) }}" class="btn"
+                            style="padding: 3px 8px; font-size: 0.75rem; white-space: nowrap;">Study</a>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
         </div>
         {% endfor %}
     </div>

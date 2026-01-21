@@ -10,14 +10,19 @@
     {% for subject in subjects %}
     <div class="card">
         <h3>{{ subject.name }}</h3>
-        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-            {% for topic in subject.topics %}
-            <a href="{{ url_for('learn', topic_id=topic.id) }}" class="btn"
-                style="background: var(--card-bg); color: var(--text-dark); border: 1px solid var(--border-color);">
-                {{ topic.name }}
-            </a>
-            {% endfor %}
+        {% for unit in subject.units %}
+        <div style="margin-top: 15px;">
+            <h4 style="color: #64748b; margin-bottom: 10px;">Unit {{ loop.index }}: {{ unit.name }}</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                {% for topic in unit.topics %}
+                <a href="{{ url_for('learn', topic_id=topic.id) }}" class="btn"
+                    style="background: var(--card-bg); color: var(--text-dark); border: 1px solid var(--border-color); font-size: 0.85rem;">
+                    {{ topic.name }}
+                </a>
+                {% endfor %}
+            </div>
         </div>
+        {% endfor %}
     </div>
     {% endfor %}
 </div>

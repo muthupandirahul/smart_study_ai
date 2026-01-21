@@ -6,6 +6,7 @@ import os
 
 app = Flask(__name__)
 app.config.from_object(Config)
+app.jinja_env.add_extension('jinja2.ext.do')
 
 ai = AIEngine()
 
@@ -66,7 +67,8 @@ def dashboard():
     # Calculate stats
     total_topics = 0
     for subj in syllabus.get('subjects', []):
-        total_topics += len(subj['topics'])
+        for unit in subj.get('units', []):
+            total_topics += len(unit.get('topics', []))
         
     completed_count = len(progress.get('topics_completed', []))
     percent = int((completed_count / total_topics * 100)) if total_topics > 0 else 0
@@ -85,10 +87,13 @@ def learn(topic_id):
     topic_name = "Unknown Topic"
     syllabus = get_syllabus()
     for subj in syllabus.get('subjects', []):
-        for t in subj['topics']:
-            if t['id'] == topic_id:
-                topic_name = t['name']
-                break
+        for unit in subj.get('units', []):
+            for t in unit.get('topics', []):
+                if t['id'] == topic_id:
+                    topic_name = t['name']
+                    break
+            if topic_name != "Unknown Topic": break
+        if topic_name != "Unknown Topic": break
     
     # Get AIGEN content
     content = ai.generate_explanation(topic_name)
@@ -183,7 +188,13 @@ def add_subject():
     new_sub = {
         "id": data['id'],
         "name": data['name'],
-        "topics": [{"id": data['id']+"_t1", "name": data['topic'], "difficulty": "Moderate"}]
+        "units": [
+            {
+                "id": data['id'] + "_u1",
+                "name": "Unit 1",
+                "topics": [{"id": data['id']+"_u1_t1", "name": data['topic'], "difficulty": "Moderate"}]
+            }
+        ]
     }
     
     if "subjects" not in syllabus: syllabus["subjects"] = []
@@ -200,9 +211,10 @@ def mock_exam():
     syllabus = get_syllabus()
     questions = []
     for subj in syllabus.get('subjects', [])[:3]:
-        if subj['topics']:
-            q = ai.generate_quiz(subj['topics'][0]['name'], "Hard")
-            if q: questions.append(q[0]) # Take top 1 question from each
+        for unit in subj.get('units', [])[:1]:
+            if unit.get('topics'):
+                q = ai.generate_quiz(unit['topics'][0]['name'], "Hard")
+                if q: questions.append(q[0]) # Take top 1 question from each
             
     return render_template('quiz.html', topic_id="mock_final", questions=questions)
 

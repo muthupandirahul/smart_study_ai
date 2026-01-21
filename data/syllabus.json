@@ -3,111 +3,1116 @@
         {
             "id": "cc201",
             "name": "Cloud Computing",
-            "topics": [
+            "units": [
                 {
-                    "id": "cc1",
-                    "name": "Cloud Architecture & Service Models (IaaS, PaaS, SaaS)",
-                    "difficulty": "Moderate"
+                    "id": "cc_u1",
+                    "name": "Introduction to Cloud Computing",
+                    "topics": [
+                        {
+                            "id": "cc_u1_t1",
+                            "name": "History of Cloud Computing",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "cc_u1_t2",
+                            "name": "Characteristics of Cloud Computing",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "cc_u1_t3",
+                            "name": "Cloud Service Models",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "cc_u1_t4",
+                            "name": "Cloud Deployment Models",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "cc_u1_t5",
+                            "name": "Benefits and Challenges",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "cc_u1_t6",
+                            "name": "Cloud Market Trends",
+                            "difficulty": "Easy"
+                        }
+                    ]
                 },
                 {
-                    "id": "cc2",
-                    "name": "Virtualization Technology",
-                    "difficulty": "Moderate"
+                    "id": "cc_u2",
+                    "name": "Cloud Architecture",
+                    "topics": [
+                        {
+                            "id": "cc_u2_t1",
+                            "name": "Reference Architecture",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "cc_u2_t2",
+                            "name": "Infrastructure as Code",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "cc_u2_t3",
+                            "name": "Serverless Computing",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "cc_u2_t4",
+                            "name": "Microservices Architecture",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "cc_u2_t5",
+                            "name": "API Management",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "cc_u2_t6",
+                            "name": "Hybrid Cloud Design",
+                            "difficulty": "Hard"
+                        }
+                    ]
                 },
                 {
-                    "id": "cc3",
-                    "name": "Cloud Security & Privacy",
-                    "difficulty": "Hard"
+                    "id": "cc_u3",
+                    "name": "Virtualization and Storage",
+                    "topics": [
+                        {
+                            "id": "cc_u3_t1",
+                            "name": "Hypervisors and Containers",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "cc_u3_t2",
+                            "name": "Network Virtualization",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "cc_u3_t3",
+                            "name": "Block and File Storage",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "cc_u3_t4",
+                            "name": "Object Storage",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "cc_u3_t5",
+                            "name": "Data Backup and Recovery",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "cc_u3_t6",
+                            "name": "Content Delivery Networks",
+                            "difficulty": "Easy"
+                        }
+                    ]
+                },
+                {
+                    "id": "cc_u4",
+                    "name": "Cloud Security",
+                    "topics": [
+                        {
+                            "id": "cc_u4_t1",
+                            "name": "Identity and Access Management",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "cc_u4_t2",
+                            "name": "Data Encryption",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "cc_u4_t3",
+                            "name": "Network Security Groups",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "cc_u4_t4",
+                            "name": "Compliance and Auditing",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "cc_u4_t5",
+                            "name": "Vulnerability Management",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "cc_u4_t6",
+                            "name": "Security Best Practices",
+                            "difficulty": "Moderate"
+                        }
+                    ]
+                },
+                {
+                    "id": "cc_u5",
+                    "name": "Cloud Platforms and Management",
+                    "topics": [
+                        {
+                            "id": "cc_u5_t1",
+                            "name": "AWS Core Services",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "cc_u5_t2",
+                            "name": "Azure Fundamental Services",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "cc_u5_t3",
+                            "name": "Google Cloud Platform",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "cc_u5_t4",
+                            "name": "Monitoring and Logging",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "cc_u5_t5",
+                            "name": "Cost Management",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "cc_u5_t6",
+                            "name": "SLA and Performance",
+                            "difficulty": "Moderate"
+                        }
+                    ]
                 }
             ]
         },
         {
             "id": "ai202",
             "name": "Artificial Intelligence & Machine Learning",
-            "topics": [
+            "units": [
                 {
-                    "id": "ai1",
-                    "name": "Supervised vs Unsupervised Learning",
-                    "difficulty": "Moderate"
+                    "id": "ai_u1",
+                    "name": "Fundamentals of AI",
+                    "topics": [
+                        {
+                            "id": "ai_u1_t1",
+                            "name": "History of AI",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "ai_u1_t2",
+                            "name": "Intelligent Agents",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "ai_u1_t3",
+                            "name": "Problem Solving Search",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "ai_u1_t4",
+                            "name": "Knowledge Representation",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "ai_u1_t5",
+                            "name": "Expert Systems",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "ai_u1_t6",
+                            "name": "AI Ethics",
+                            "difficulty": "Easy"
+                        }
+                    ]
                 },
                 {
-                    "id": "ai2",
-                    "name": "Neural Networks & Deep Learning",
-                    "difficulty": "Hard"
+                    "id": "ai_u2",
+                    "name": "Machine Learning Supervised",
+                    "topics": [
+                        {
+                            "id": "ai_u2_t1",
+                            "name": "Linear Regression",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "ai_u2_t2",
+                            "name": "Logistic Regression",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "ai_u2_t3",
+                            "name": "Decision Trees",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "ai_u2_t4",
+                            "name": "Support Vector Machines",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "ai_u2_t5",
+                            "name": "k-Nearest Neighbors",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "ai_u2_t6",
+                            "name": "Ensemble Learning",
+                            "difficulty": "Hard"
+                        }
+                    ]
                 },
                 {
-                    "id": "ai3",
-                    "name": "Reinforcement Learning",
-                    "difficulty": "Hard"
+                    "id": "ai_u3",
+                    "name": "Unsupervised and Reinforcement Learning",
+                    "topics": [
+                        {
+                            "id": "ai_u3_t1",
+                            "name": "K-Means Clustering",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "ai_u3_t2",
+                            "name": "Principal Component Analysis",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "ai_u3_t3",
+                            "name": "Association Rule Learning",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "ai_u3_t4",
+                            "name": "Introduction to RL",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "ai_u3_t5",
+                            "name": "Q-Learning",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "ai_u3_t6",
+                            "name": "Exploration vs Exploitation",
+                            "difficulty": "Moderate"
+                        }
+                    ]
+                },
+                {
+                    "id": "ai_u4",
+                    "name": "Neural Networks and Deep Learning",
+                    "topics": [
+                        {
+                            "id": "ai_u4_t1",
+                            "name": "Perceptrons",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "ai_u4_t2",
+                            "name": "Backpropagation",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "ai_u4_t3",
+                            "name": "Convolutional Neural Networks",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "ai_u4_t4",
+                            "name": "Recurrent Neural Networks",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "ai_u4_t5",
+                            "name": "Generative Adversarial Networks",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "ai_u4_t6",
+                            "name": "Transfer Learning",
+                            "difficulty": "Moderate"
+                        }
+                    ]
+                },
+                {
+                    "id": "ai_u5",
+                    "name": "Natural Language Processing",
+                    "topics": [
+                        {
+                            "id": "ai_u5_t1",
+                            "name": "Text Preprocessing",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "ai_u5_t2",
+                            "name": "Word Embeddings",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "ai_u5_t3",
+                            "name": "Sentiment Analysis",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "ai_u5_t4",
+                            "name": "Named Entity Recognition",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "ai_u5_t5",
+                            "name": "Sequence to Sequence Models",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "ai_u5_t6",
+                            "name": "Transformers and Large Language Models",
+                            "difficulty": "Hard"
+                        }
+                    ]
                 }
             ]
         },
         {
             "id": "java203",
             "name": "Advanced Java Programming",
-            "topics": [
+            "units": [
                 {
-                    "id": "j1",
-                    "name": "J2EE Framework & Servlets",
-                    "difficulty": "Moderate"
+                    "id": "java_u1",
+                    "name": "Java Collection Framework",
+                    "topics": [
+                        {
+                            "id": "java_u1_t1",
+                            "name": "List, Set, Map Interfaces",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "java_u1_t2",
+                            "name": "ArrayList vs LinkedList",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "java_u1_t3",
+                            "name": "HashMap and TreeMap",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "java_u1_t4",
+                            "name": "Generics in Java",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "java_u1_t5",
+                            "name": "Iterators and Spliterators",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "java_u1_t6",
+                            "name": "Comparable and Comparator",
+                            "difficulty": "Moderate"
+                        }
+                    ]
                 },
                 {
-                    "id": "j2",
-                    "name": "Spring Boot Basics",
-                    "difficulty": "Hard"
+                    "id": "java_u2",
+                    "name": "Multi-threading and Concurrency",
+                    "topics": [
+                        {
+                            "id": "java_u2_t1",
+                            "name": "Thread Lifecycle",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "java_u2_t2",
+                            "name": "Synchronization",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "java_u2_t3",
+                            "name": "Executor Framework",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "java_u2_t4",
+                            "name": "Locks and Conditions",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "java_u2_t5",
+                            "name": "Thread Safety",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "java_u2_t6",
+                            "name": "Atomic Variables",
+                            "difficulty": "Hard"
+                        }
+                    ]
                 },
                 {
-                    "id": "j3",
-                    "name": "Hibernate & ORM",
-                    "difficulty": "Hard"
+                    "id": "java_u3",
+                    "name": "Java Database Connectivity (JDBC)",
+                    "topics": [
+                        {
+                            "id": "java_u3_t1",
+                            "name": "JDBC Drivers",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "java_u3_t2",
+                            "name": "PreparedStatement and Statement",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "java_u3_t3",
+                            "name": "ResultSet Handling",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "java_u3_t4",
+                            "name": "Transaction Management",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "java_u3_t5",
+                            "name": "Batch Processing",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "java_u3_t6",
+                            "name": "Connection Pooling",
+                            "difficulty": "Hard"
+                        }
+                    ]
+                },
+                {
+                    "id": "java_u4",
+                    "name": "Servlets and JSP",
+                    "topics": [
+                        {
+                            "id": "java_u4_t1",
+                            "name": "Servlet Life Cycle",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "java_u4_t2",
+                            "name": "Request and Response Objects",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "java_u4_t3",
+                            "name": "Session Management",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "java_u4_t4",
+                            "name": "Filters and Listeners",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "java_u4_t5",
+                            "name": "JSP Basics",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "java_u4_t6",
+                            "name": "JSP Standard Tag Library (JSTL)",
+                            "difficulty": "Moderate"
+                        }
+                    ]
+                },
+                {
+                    "id": "java_u5",
+                    "name": "Spring Framework Basics",
+                    "topics": [
+                        {
+                            "id": "java_u5_t1",
+                            "name": "Dependency Injection",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "java_u5_t2",
+                            "name": "Inversion of Control (IoC)",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "java_u5_t3",
+                            "name": "Spring Boot Configuration",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "java_u5_t4",
+                            "name": "Spring Data JPA",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "java_u5_t5",
+                            "name": "Spring MVC",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "java_u5_t6",
+                            "name": "Building REST APIs",
+                            "difficulty": "Hard"
+                        }
+                    ]
                 }
             ]
         },
         {
             "id": "lab204",
             "name": "Java Programming Lab",
-            "topics": [
+            "units": [
                 {
-                    "id": "lab1",
-                    "name": "JDBC Connectivity",
-                    "difficulty": "Moderate"
+                    "id": "lab_u1",
+                    "name": "Basic Programs",
+                    "topics": [
+                        {
+                            "id": "lab_u1_t1",
+                            "name": "Array Operations",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "lab_u1_t2",
+                            "name": "String Manipulations",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "lab_u1_t3",
+                            "name": "File I/O Streams",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "lab_u1_t4",
+                            "name": "Serialization",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "lab_u1_t5",
+                            "name": "Exception Handling Lab",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "lab_u1_t6",
+                            "name": "Object-Oriented Coding",
+                            "difficulty": "Moderate"
+                        }
+                    ]
                 },
                 {
-                    "id": "lab2",
-                    "name": "Multi-threading & Socket Programming",
-                    "difficulty": "Hard"
+                    "id": "lab_u2",
+                    "name": "GUI Development",
+                    "topics": [
+                        {
+                            "id": "lab_u2_t1",
+                            "name": "Swing Basics",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "lab_u2_t2",
+                            "name": "Event Handling",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "lab_u2_t3",
+                            "name": "Layout Managers",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "lab_u2_t4",
+                            "name": "JDBC Integration UI",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "lab_u2_t5",
+                            "name": "Custom Components",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "lab_u2_t6",
+                            "name": "JavaFX Introduction",
+                            "difficulty": "Moderate"
+                        }
+                    ]
+                },
+                {
+                    "id": "lab_u3",
+                    "name": "Network Lab",
+                    "topics": [
+                        {
+                            "id": "lab_u3_t1",
+                            "name": "Socket Programming Basics",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "lab_u3_t2",
+                            "name": "Client-Server Communication",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "lab_u3_t3",
+                            "name": "UDP Communication",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "lab_u3_t4",
+                            "name": "Multi-Client Server",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "lab_u3_t5",
+                            "name": "HTTP Request in Java",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "lab_u3_t6",
+                            "name": "Remote Method Invocation",
+                            "difficulty": "Hard"
+                        }
+                    ]
+                },
+                {
+                    "id": "lab_u4",
+                    "name": "Database Lab",
+                    "topics": [
+                        {
+                            "id": "lab_u4_t1",
+                            "name": "Creating Database Tables",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "lab_u4_t2",
+                            "name": "CRUD Operations",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "lab_u4_t3",
+                            "name": "Calling Stored Procedures",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "lab_u4_t4",
+                            "name": "Database Metadata",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "lab_u4_t5",
+                            "name": "Implementing Search",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "lab_u4_t6",
+                            "name": "Report Generation",
+                            "difficulty": "Hard"
+                        }
+                    ]
+                },
+                {
+                    "id": "lab_u5",
+                    "name": "Web Lab",
+                    "topics": [
+                        {
+                            "id": "lab_u5_t1",
+                            "name": "Servlet Hello World",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "lab_u5_t2",
+                            "name": "Login Authentication",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "lab_u5_t3",
+                            "name": "Shopping Cart Application",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "lab_u5_t4",
+                            "name": "Using JSTL in JSP",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "lab_u5_t5",
+                            "name": "Simple Spring Boot App",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "lab_u5_t6",
+                            "name": "REST API Development Lab",
+                            "difficulty": "Hard"
+                        }
+                    ]
                 }
             ]
         },
         {
             "id": "aos205",
             "name": "Advanced Operating Systems",
-            "topics": [
+            "units": [
                 {
-                    "id": "os1",
-                    "name": "Distributed Systems",
-                    "difficulty": "Hard"
+                    "id": "aos_u1",
+                    "name": "Process Management",
+                    "topics": [
+                        {
+                            "id": "aos_u1_t1",
+                            "name": "Process Synchronization",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "aos_u1_t2",
+                            "name": "Inter-process Communication",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "aos_u1_t3",
+                            "name": "Deadlock Prevention",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "aos_u1_t4",
+                            "name": "Deadlock Avoidance",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "aos_u1_t5",
+                            "name": "Scheduling in Multi-processor",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "aos_u1_t6",
+                            "name": "Real-time Scheduling",
+                            "difficulty": "Hard"
+                        }
+                    ]
                 },
                 {
-                    "id": "os2",
-                    "name": "Real-time Operating Systems",
-                    "difficulty": "Moderate"
+                    "id": "aos_u2",
+                    "name": "Memory Management",
+                    "topics": [
+                        {
+                            "id": "aos_u2_t1",
+                            "name": "Segmented Memory",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "aos_u2_t2",
+                            "name": "Paging and Virtual Memory",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "aos_u2_t3",
+                            "name": "Page Replacement Algorithms",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "aos_u2_t4",
+                            "name": "Memory Consistency Models",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "aos_u2_t5",
+                            "name": "Garbage Collection",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "aos_u2_t6",
+                            "name": "Shared Memory Systems",
+                            "difficulty": "Hard"
+                        }
+                    ]
+                },
+                {
+                    "id": "aos_u3",
+                    "name": "Distributed Systems",
+                    "topics": [
+                        {
+                            "id": "aos_u3_t1",
+                            "name": "Distributed OS Architecture",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "aos_u3_t2",
+                            "name": "Clock Synchronization",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "aos_u3_t3",
+                            "name": "Mutual Exclusion in Dist Systems",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "aos_u3_t4",
+                            "name": "Leader Election Algorithms",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "aos_u3_t5",
+                            "name": "Consensus Algorithms (Paxos/Raft)",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "aos_u3_t6",
+                            "name": "RPC and Message Passing",
+                            "difficulty": "Hard"
+                        }
+                    ]
+                },
+                {
+                    "id": "aos_u4",
+                    "name": "File Systems",
+                    "topics": [
+                        {
+                            "id": "aos_u4_t1",
+                            "name": "Logical File Systems",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "aos_u4_t2",
+                            "name": "Disk Scheduling",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "aos_u4_t3",
+                            "name": "NFS and AFS",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "aos_u4_t4",
+                            "name": "Distributed File Systems",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "aos_u4_t5",
+                            "name": "Reliability and Recovery",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "aos_u4_t6",
+                            "name": "Security in File Systems",
+                            "difficulty": "Moderate"
+                        }
+                    ]
+                },
+                {
+                    "id": "aos_u5",
+                    "name": "Case Studies",
+                    "topics": [
+                        {
+                            "id": "aos_u5_t1",
+                            "name": "Linux Kernel Internals",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "aos_u5_t2",
+                            "name": "Windows OS Architecture",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "aos_u5_t3",
+                            "name": "Android OS Design",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "aos_u5_t4",
+                            "name": "Cloud OS (Chrome OS)",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "aos_u5_t5",
+                            "name": "Microkernels vs Monolithic",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "aos_u5_t6",
+                            "name": "Embedded Operating Systems",
+                            "difficulty": "Moderate"
+                        }
+                    ]
                 }
             ]
         },
         {
             "id": "bio206",
             "name": "Bio Entrepreneurship",
-            "topics": [
+            "units": [
                 {
-                    "id": "bio1",
-                    "name": "Business Models in Biotech",
-                    "difficulty": "Easy"
+                    "id": "bio_u1",
+                    "name": "Biotech Ecosystem",
+                    "topics": [
+                        {
+                            "id": "bio_u1_t1",
+                            "name": "Introduction to Biotech Industry",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "bio_u1_t2",
+                            "name": "Opportunities in Bio-Economy",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u1_t3",
+                            "name": "Success Stories in Biotech",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "bio_u1_t4",
+                            "name": "Current Trends in Biotech",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u1_t5",
+                            "name": "Global Biotech Market",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u1_t6",
+                            "name": "Bioinformatics Startups",
+                            "difficulty": "Moderate"
+                        }
+                    ]
                 },
                 {
-                    "id": "bio2",
-                    "name": "IPR & Patenting",
-                    "difficulty": "Moderate"
+                    "id": "bio_u2",
+                    "name": "Intellectual Property",
+                    "topics": [
+                        {
+                            "id": "bio_u2_t1",
+                            "name": "IPR Basics",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u2_t2",
+                            "name": "Patent Filing Process",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "bio_u2_t3",
+                            "name": "Copyrights and Trademarks",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u2_t4",
+                            "name": "Regulatory Affairs",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "bio_u2_t5",
+                            "name": "FDA and Clinical Trials",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "bio_u2_t6",
+                            "name": "Ethical Legal Social Issues",
+                            "difficulty": "Moderate"
+                        }
+                    ]
+                },
+                {
+                    "id": "bio_u3",
+                    "name": "Business Development",
+                    "topics": [
+                        {
+                            "id": "bio_u3_t1",
+                            "name": "Business Model Canvas",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "bio_u3_t2",
+                            "name": "Marketing in Biotech",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u3_t3",
+                            "name": "Product Lifecycle",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u3_t4",
+                            "name": "Strategic Alliances",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u3_t5",
+                            "name": "Mergers and Acquisitions",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "bio_u3_t6",
+                            "name": "Public-Private Partnerships",
+                            "difficulty": "Moderate"
+                        }
+                    ]
+                },
+                {
+                    "id": "bio_u4",
+                    "name": "Financial Management",
+                    "topics": [
+                        {
+                            "id": "bio_u4_t1",
+                            "name": "Venture Capital Funding",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "bio_u4_t2",
+                            "name": "Government Grants and Loans",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u4_t3",
+                            "name": "Budgeting for Research",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u4_t4",
+                            "name": "Financial Statements",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u4_t5",
+                            "name": "Valuation of Biotech Firms",
+                            "difficulty": "Hard"
+                        },
+                        {
+                            "id": "bio_u4_t6",
+                            "name": "Exit Strategies",
+                            "difficulty": "Hard"
+                        }
+                    ]
+                },
+                {
+                    "id": "bio_u5",
+                    "name": "Entrepreneurial Skills",
+                    "topics": [
+                        {
+                            "id": "bio_u5_t1",
+                            "name": "Leadership and Team Building",
+                            "difficulty": "Easy"
+                        },
+                        {
+                            "id": "bio_u5_t2",
+                            "name": "Negotiation Skills",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u5_t3",
+                            "name": "Crisis Management",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u5_t4",
+                            "name": "Pivoting in Business",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u5_t5",
+                            "name": "Customer Discovery",
+                            "difficulty": "Moderate"
+                        },
+                        {
+                            "id": "bio_u5_t6",
+                            "name": "Pitching to Investors",
+                            "difficulty": "Hard"
+                        }
+                    ]
                 }
             ]
         }

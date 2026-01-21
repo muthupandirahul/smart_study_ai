@@ -17,8 +17,6 @@ def init_db():
     c = conn.cursor()
     
     # Users Table with Password
-    # Recreating table to ensure Password column exists
-    c.execute('DROP TABLE IF EXISTS users')
     c.execute('''
         CREATE TABLE IF NOT EXISTS users (
             username TEXT PRIMARY KEY,
@@ -52,8 +50,17 @@ def init_db():
         )
     ''')
     
+    # Seed default user if none exists
+    c.execute('SELECT COUNT(*) FROM users')
+    if c.fetchone()[0] == 0:
+        c.execute('''
+            INSERT INTO users (username, password, roll_number, name, email)
+            VALUES (?, ?, ?, ?, ?)
+        ''', ('student', '1111', '1001', 'Default Student', 'student@college.edu'))
+    
     conn.commit()
     conn.close()
+
 
 def load_json(filename):
     filepath = os.path.join(DATA_DIR, filename)

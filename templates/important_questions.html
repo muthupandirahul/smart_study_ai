@@ -7,29 +7,32 @@
 
     {% for subject in subjects %}
     <div class="card">
-        <h3 style="color: var(--primary);">{{ subject.name }}</h3>
+        <h3 style="color: var(--primary); border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 20px;">
+            {{ subject.name }}</h3>
 
-        <div style="margin-bottom: 15px;">
-            <strong>📌 5-Mark Questions (Short Notes)</strong>
-            <ul style="margin-top: 5px;">
-                {% for topic in subject.topics[:2] %}
-                <li>Explain the concept of <b>{{ topic.name }}</b> with a diagram.</li>
-                {% endfor %}
-                <li>Write a short note on recent trends in {{ subject.name }}.</li>
-            </ul>
-        </div>
+        {% for unit in subject.units %}
+        <div style="margin-bottom: 25px; background: rgba(255, 255, 255, 0.3); padding: 15px; border-radius: 10px;">
+            <h4 style="color: #4a5568; margin-bottom: 10px;">Unit {{ loop.index }}: {{ unit.name }}</h4>
 
-        <div>
-            <strong>📌 10-Mark Questions (Detailed)</strong>
-            <ul style="margin-top: 5px;">
-                {% for topic in subject.topics[2:] %}
-                <li>Discuss <b>{{ topic.name }}</b> in detail with its advantages and disadvantages.</li>
-                {% endfor %}
-                {% if not subject.topics[2:] %}
-                <li>Describe the architecture and working principles of {{ subject.name }}.</li>
-                {% endif %}
-            </ul>
+            <div style="margin-bottom: 10px;">
+                <strong>📌 5-Mark Questions (Short Notes)</strong>
+                <ul style="margin-top: 5px;">
+                    {% for topic in unit.topics[:2] %}
+                    <li>Explain the concept of <b>{{ topic.name }}</b> with a diagram.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div>
+                <strong>📌 10-Mark Questions (Detailed)</strong>
+                <ul style="margin-top: 5px;">
+                    {% for topic in unit.topics[2:4] %}
+                    <li>Discuss <b>{{ topic.name }}</b> in detail with its advantages and disadvantages.</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
+        {% endfor %}
     </div>
     {% endfor %}
 </div>
