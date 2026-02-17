@@ -23,7 +23,8 @@ def init_db():
             password TEXT,
             roll_number TEXT,
             name TEXT,
-            email TEXT
+            email TEXT,
+            role TEXT DEFAULT 'student'
         )
     ''')
     
@@ -56,7 +57,7 @@ def init_db():
         c.execute('''
             INSERT INTO users (username, password, roll_number, name, email)
             VALUES (?, ?, ?, ?, ?)
-        ''', ('student', '1111', '1001', 'Default Student', 'student@college.edu'))
+        ''', ('student', '1111', '1001', 'Default Student', 'student@college.edu', 'student'))
     
     conn.commit()
     conn.close()
@@ -77,11 +78,11 @@ def save_json(filename, data):
     with open(filepath, 'w') as f:
         json.dump(data, f, indent=4)
 
-def create_user(username, password, roll_number, name, email):
+def create_user(username, password, roll_number, name, email, role='student'):
     conn = get_db_connection()
     try:
-        conn.execute('INSERT INTO users (username, password, roll_number, name, email) VALUES (?, ?, ?, ?, ?)',
-                     (username, password, roll_number, name, email))
+        conn.execute('INSERT INTO users (username, password, roll_number, name, email, role) VALUES (?, ?, ?, ?, ?, ?)',
+                     (username, password, roll_number, name, email, role))
         conn.commit()
         return True
     except sqlite3.IntegrityError:
@@ -132,6 +133,44 @@ def update_progress(username, topic_id, data_type, value):
         ''', (username, topic_id, value['score'], value['total'], value.get('timestamp', str(datetime.now()))))
     conn.commit()
     conn.close()
+
+def get_class_analytics():
+    conn = get_db_connection()
+    # Get all students and their scores
+    students = conn.execute("SELECT username, name, roll_number FROM users WHERE role = 'student'").fetchall()
+    
+    analytics = []
+    for std in students:
+        username = std['username']
+        scores = conn.execute('SELECT topic_id, score, total FROM quiz_scores WHERE username = ?', (username,)).fetchall()
+        
+        comp_count = conn.execute('SELECT COUNT(*) FROM topics_completed WHERE username = ?', (username,)).fetchone()[0]
+        
+        total_score = sum(s['score'] for s in scores)
+        total_possible = sum(s['total'] for s in scores)
+        avg_perf = (total_score / total_possible * 100) if total_possible > 0 else 0
+        
+        analytics.append({
+            "name": std['name'],
+            "roll": std['roll_number'],
+            "completed": comp_count,
+            "performance": int(avg_perf)
+        })
+    conn.close()
+    return analytics
+
+def update_db_schema_role():
+    """Migration helper to add role column if missing"""
+    conn = get_db_connection()
+    try:
+        conn.execute("ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'student'")
+        conn.commit()
+    except:
+        pass # Already exists
+    conn.close()
+
+# Migration call
+update_db_schema_role()
 
 # Initialize DB on load
 init_db()

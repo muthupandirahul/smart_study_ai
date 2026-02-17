@@ -1,6 +1,7 @@
 import random
 import time
 import os
+import json
 from config import Config
 
 # Optional: Real AI Library
@@ -135,29 +136,100 @@ class AIEngine:
         # Fallback to Knowledge Base
         return self._get_kb_content(topic_id, topic_name)
 
-    def generate_quiz(self, topic_name, difficulty="Easy"):
+    def generate_quiz(self, topic_name, difficulty="Easy", num_questions=25, global_seed=0):
         topic_id = self._find_id_by_name(topic_name)
         
         # KB Lookup
+        kb_questions = []
         if topic_id in self.kb and "quiz" in self.kb[topic_id]:
-             questions = self.kb[topic_id]["quiz"].get(difficulty, [])
-             if not questions: # Fallback to any difficulty
-                 questions = self.kb[topic_id]["quiz"].get("Easy", []) + self.kb[topic_id]["quiz"].get("Moderate", [])
+             kb_questions = self.kb[topic_id]["quiz"].get(difficulty, [])
+             if not kb_questions: # Fallback to any difficulty
+                 kb_questions = self.kb[topic_id]["quiz"].get("Easy", []) + self.kb[topic_id]["quiz"].get("Moderate", [])
+        
+        # Format KB questions
+        formatted = []
+        for i, q in enumerate(kb_questions):
+            formatted.append({
+                "id": i+1,
+                "question": q['q'],
+                "image": q.get('img'),
+                "options": self._shuffle_options(q['options']),
+                "answer": q['a']
+            })
+        
+        # AI Generation if needed (if gemini is available)
+        if len(formatted) < num_questions and self.provider == "gemini" and self.model:
+            try:
+                needed = num_questions - len(formatted)
+                prompt = f"Generate {needed} MCQ questions for {topic_name} at {difficulty} level. Return JSON list of {{q, options[], a}}."
+                response = self.model.generate_content(prompt)
+                ai_questions = self._parse_quiz_json(response.text)
+                for i, q in enumerate(ai_questions):
+                    formatted.append({
+                        "id": len(formatted)+1,
+                        "question": q['q'],
+                        "options": self._shuffle_options(q['options']),
+                        "answer": q['a']
+                    })
+            except Exception as e:
+                print(f"AI Quiz Gen Error: {e}")
+ 
+        # Supplement with dynamic mock questions if still short
+        while len(formatted) < num_questions:
+            idx = len(formatted) + global_seed
+            q_data = self._smart_mock_question(topic_name, idx, difficulty)
+            formatted.append({
+                "id": len(formatted) + 1,
+                "question": q_data['q'],
+                "options": q_data['options'], # Already shuffled/varied in helper
+                "answer": q_data['a']
+            })
              
-             # Format questions
-             formatted = []
-             for i, q in enumerate(questions):
-                 formatted.append({
-                     "id": i+1,
-                     "question": q['q'],
-                     "image": q.get('img'),
-                     "options": self._shuffle_options(q['options']),
-                     "answer": q['a']
-                 })
-             return formatted
+        return formatted[:num_questions]
 
-        # Generic Fallback if topic not in KB
-        return self._generic_quiz(topic_name, difficulty)
+    def _smart_mock_question(self, topic, index, difficulty):
+        # Use a hash of (topic + index) to ensure unique templates and variations
+        import hashlib
+        h = int(hashlib.md5(f"{topic}-{index}".encode()).hexdigest(), 16)
+        
+        templates = [
+            {"q": "What is the primary objective of {topic}?", "a": "Efficiency and Optimization"},
+            {"q": "Which component is most critical for {topic}?", "a": "Architecture Layer"},
+            {"q": "A common challenge in {topic} implementation is:", "a": "Data Consistency"},
+            {"q": "Which characteristic defines {topic} at a {difficulty} level?", "a": "Core Principles"},
+            {"q": "How does {topic} impact modern system design?", "a": "Scalability Support"},
+            {"q": "The fundamental concept behind {topic} is:", "a": "Abstraction"},
+            {"q": "Which tool is best suited for managing {topic}?", "a": "Integrated Framework"},
+            {"q": "In the context of MSc Computer Science, {topic} focuses on:", "a": "Enterprise Solutions"},
+            {"q": "What is a major advantage of using {topic}?", "a": "Reduced Complexity"},
+            {"q": "Which best describes a {difficulty} application of {topic}?", "a": "System Integration"},
+            {"q": "The most important metric for {topic} performance is:", "a": "Latency/Throughput"},
+            {"q": "Which protocol is often used in {topic} communication?", "a": "Standardized Interface"}
+        ]
+        
+        distractors_pool = [
+            "Hardware Limit", "Static Configuration", "Manual Entry", "Visual Design",
+            "Color Palette", "Font Styling", "Legacy Documentation", "External Plugins",
+            "Client Interface", "Simple Scripts", "Basic Operations", "Local Storage",
+            "Minor Updates", "Initial Planning", "Concept Phase", "Generic Tools"
+        ]
+        
+        # Select template
+        tpl = templates[h % len(templates)]
+        ans = tpl['a']
+        
+        # Select 3 unique distractors from pool (ensure they aren't the answer)
+        random.seed(h)
+        distractors = random.sample([d for d in distractors_pool if d != ans], 3)
+        
+        options = distractors + [ans]
+        random.shuffle(options)
+        
+        return {
+            "q": tpl['q'].format(topic=topic, difficulty=difficulty),
+            "options": options,
+            "a": ans
+        }
 
     def _get_kb_content(self, topic_id, topic_name):
         if topic_id in self.kb:
@@ -191,16 +263,62 @@ class AIEngine:
         random.shuffle(opts)
         return opts
 
+    def _parse_gemini(self, text):
+        # Placeholder for complex parsing. In a real app, you'd extract sections.
+        return {
+            "title": "AI Generated Content",
+            "explanation": text,
+            "key_points": ["Review generated text for key points"],
+            "example": "See text above",
+            "summary": "AI summary"
+        }
+
+    def _parse_quiz_json(self, text):
+        try:
+            # Try to find JSON block in markdown
+            if "```json" in text:
+                text = text.split("```json")[1].split("```")[0]
+            elif "```" in text:
+                text = text.split("```")[1].split("```")[0]
+            return json.loads(text)
+        except:
+            return []
+
     def analyze_performance(self, scores_data):
-        avg = 0
-        if scores_data: avg = sum(s['score'] for s in scores_data) / len(scores_data)
+        total_score = sum(s['score'] for s in scores_data)
+        total_possible = sum(s['total'] for s in scores_data)
+        avg_percent = (total_score / total_possible * 100) if total_possible > 0 else 0
         
-        level = "Moderate"
-        if avg > 80: level = "High" 
-        elif avg < 40: level = "Low"
+        level = "Excellent" if avg_percent >= 60 else "Low level understanding"
         
         return {
             "level": level,
-            "feedback": f"Based on your recent tests, your understanding is **{level}** ({int(avg)}% avg).",
-            "weak_topics": [s.get('topic_id', 'Unknown') for s in scores_data if s['score'] < s['total']*0.5]
+            "feedback": f"Based on your recent tests, your understanding is **{level}** ({int(avg_percent)}% avg).",
+            "weak_topics": [s.get('topic_id', 'Unknown') for s in scores_data if s['score'] < s['total']*0.6]
         }
+
+    def get_chat_response(self, user_query):
+        """Handle student doubts with AI or mock response."""
+        if self.provider == "gemini" and self.model:
+            try:
+                chat_prompt = f"You are a helpful study assistant for a Computer Science student. Answer this doubt concisely: {user_query}"
+                response = self.model.generate_content(chat_prompt)
+                return response.text
+            except Exception as e:
+                print(f"Chat AI Error: {e}")
+        
+        # Smart Mock Response
+        keywords = {
+            "java": "Java is an object-oriented programming language. For your syllabus, focus on Servlets and the J2EE stack.",
+            "cloud": "Cloud Computing provides on-demand resources like IaaS, PaaS, and SaaS. AWS and Google Cloud are major providers.",
+            "ai": "Artificial Intelligence involves machines mimicking human cognitive functions. ML and Deep Learning are its core subsets.",
+            "bio": "Biotech entrepreneurship combines biology and business. IP rights (patents) are crucial for biotech startups.",
+            "quiz": "You can take a quiz for any topic on the Dashboard to test your knowledge.",
+            "exam": "The Semester Exam Mode provides a comprehensive 25-question test covering the entire syllabus."
+        }
+        
+        for key, resp in keywords.items():
+            if key in user_query.lower():
+                return f"I can help with that! {resp}"
+        
+        return f"That's an interesting question about '{user_query}'. I recommend checking the specific study module on your dashboard for a detailed explanation, or ask me about Java, Cloud, AI, or Biotech!"

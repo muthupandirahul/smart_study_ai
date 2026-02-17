@@ -2,7 +2,10 @@
 
 {% block content %}
 <div class="glass-panel">
-    <h2>Topic Quiz</h2>
+    <div id="timer-container"
+        style="text-align: right; margin-bottom: 10px; font-weight: bold; font-size: 1.2rem; color: #f59e0b;">
+        Timer: <span id="timer">--:--</span>
+    </div>
     <div id="quiz-container">
         {% for q in questions %}
         <div class="card question-card" id="q-{{ loop.index }}"
@@ -18,15 +21,17 @@
 
             <p style="font-size: 1.2rem;">{{ q.question }}</p>
 
-            <div class="options">
+            <div class="options" id="options-{{ loop.index }}">
                 {% for opt in q.options %}
-                <button class="option-btn" onclick="selectOption(this, '{{ q.answer }}')">{{ opt }}</button>
+                <button class="option-btn" onclick="selectOption(this, '{{ q.answer }}', {{ loop.index }})">{{ opt
+                    }}</button>
                 {% endfor %}
             </div>
 
             <div style="margin-top: 20px;">
                 {% if not loop.last %}
-                <button class="btn" onclick="nextQuestion({{ loop.index }})">Next ></button>
+                <button class="btn" id="next-btn-{{ loop.index }}" onclick="nextQuestion({{ loop.index }})">Next
+                    ></button>
                 {% else %}
                 <button class="btn" style="background: #16a34a;" onclick="submitQuiz()">Submit Test</button>
                 {% endif %}
@@ -40,8 +45,43 @@
     let score = 0;
     const total = {{ questions| length }};
     const topicId = "{{ topic_id }}";
+    const quizType = "{{ quiz_type }}";
+    let currentQ = 1;
 
-    function selectOption(btn, correctAnswer) {
+    let timeLeft = (quizType === 'semester') ? 5 * 60 : 10;
+    let timerInterval;
+
+    function startTimer() {
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+
+            if (timeLeft <= 0) {
+                if (quizType === 'semester') {
+                    clearInterval(timerInterval);
+                    alert("Time's up! Submitting your exam.");
+                    submitQuiz();
+                } else {
+                    // Per question timeout
+                    if (currentQ < total) {
+                        nextQuestion(currentQ);
+                    } else {
+                        clearInterval(timerInterval);
+                        submitQuiz();
+                    }
+                }
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const mins = Math.floor(timeLeft / 60);
+        const secs = timeLeft % 60;
+        document.getElementById('timer').textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function selectOption(btn, correctAnswer, qIdx) {
         // Remove active class from siblings
         let parent = btn.parentElement;
         let siblings = parent.getElementsByClassName('option-btn');
@@ -63,14 +103,25 @@
         if (btn.textContent.trim() === correctAnswer) {
             score++;
         }
+
+        // If topic mode, maybe stop timer for this question? 
+        // No, user can still see result then move next. 
+        // But if we want 10s per question strict, we keep it running.
     }
 
     function nextQuestion(currentIndex) {
         document.getElementById(`q-${currentIndex}`).style.display = 'none';
         document.getElementById(`q-${currentIndex + 1}`).style.display = 'block';
+        currentQ++;
+
+        if (quizType === 'topic') {
+            timeLeft = 10; // Reset for next q
+            updateTimerDisplay();
+        }
     }
 
     function submitQuiz() {
+        clearInterval(timerInterval);
         fetch('/submit_quiz', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -85,5 +136,7 @@
                 window.location.href = data.redirect;
             });
     }
+
+    window.onload = startTimer;
 </script>
 {% endblock %}

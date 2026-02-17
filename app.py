@@ -43,8 +43,9 @@ def register():
         roll_number = request.form.get('roll_number')
         name = request.form.get('name')
         email = request.form.get('email')
+        role = request.form.get('role', 'student')
         
-        if create_user(username, password, roll_number, name, email):
+        if create_user(username, password, roll_number, name, email, role):
             return redirect(url_for('index'))
         else:
             return render_template('register.html', error="Username already exists.")
@@ -61,23 +62,69 @@ def dashboard():
     if 'user' not in session: return redirect(url_for('index'))
     
     user = session['user']
+    if user.get('role') == 'professor':
+        return redirect(url_for('professor_dashboard'))
+    
     progress = get_student_progress(user_id(user))
     syllabus = get_syllabus()
+    syllabus_meta = load_json('syllabus_meta.json')
     
-    # Calculate stats
+    # Calculate stats and per-subject readiness
     total_topics = 0
+    subjects_data = []
+    
+    topics_completed = progress.get('topics_completed', [])
+    quiz_scores = progress.get('quiz_scores', {})
+    
     for subj in syllabus.get('subjects', []):
-        for unit in subj.get('units', []):
-            total_topics += len(unit.get('topics', []))
+        subj_total = 0
+        subj_completed = 0
+        subj_score_sum = 0
+        subj_quizzes = 0
         
-    completed_count = len(progress.get('topics_completed', []))
+        for unit in subj.get('units', []):
+            for t in unit.get('topics', []):
+                subj_total += 1
+                total_topics += 1
+                if t['id'] in topics_completed:
+                    subj_completed += 1
+                
+                if t['id'] in quiz_scores:
+                    qs = quiz_scores[t['id']]
+                    if qs['total'] > 0:
+                        subj_score_sum += (qs['score'] / qs['total']) * 100
+                        subj_quizzes += 1
+        
+        # Readiness = Coverage(50%) + Performance(50%)
+        coverage_score = (subj_completed / subj_total * 50) if subj_total > 0 else 0
+        perf_score = (subj_score_sum / subj_quizzes * 0.5) if subj_quizzes > 0 else 0
+        readiness_score = int(coverage_score + perf_score)
+        
+        status = "Needs Improvement"
+        status_color = "#ef4444" # Red
+        if readiness_score >= 80:
+            status = "Exam Ready"
+            status_color = "#22c55e" # Green
+        elif readiness_score >= 60:
+            status = "Moderate"
+            status_color = "#f59e0b" # Yellow
+            
+        subjects_data.append({
+            **subj,
+            "readiness": readiness_score,
+            "status": status,
+            "status_color": status_color
+        })
+        
+    completed_count = len(topics_completed)
     percent = int((completed_count / total_topics * 100)) if total_topics > 0 else 0
     
     return render_template('dashboard.html', 
                            user=user, 
                            progress=progress, 
                            percent=percent,
-                           subjects=syllabus.get('subjects', []))
+                           subjects=subjects_data,
+                           syllabus_meta=syllabus_meta)
 
 @app.route('/learn/<topic_id>')
 def learn(topic_id):
@@ -121,8 +168,72 @@ def quiz(topic_id):
     # Determine difficulty from session or credential
     difficulty = session.get('difficulty', 'Moderate') 
     
-    questions = ai.generate_quiz(topic_id, difficulty)
-    return render_template('quiz.html', topic_id=topic_id, questions=questions)
+    # Find topic name from syllabus
+    topic_name = "General Topic"
+    syllabus = get_syllabus()
+    for subj in syllabus.get('subjects', []):
+        for unit in subj.get('units', []):
+            for t in unit.get('topics', []):
+                if t['id'] == topic_id:
+                    topic_name = t['name']
+                    break
+            if topic_name != "General Topic": break
+        if topic_name != "General Topic": break
+
+    questions = ai.generate_quiz(topic_name, difficulty, num_questions=5)
+    return render_template('quiz.html', topic_id=topic_id, questions=questions, quiz_type='topic')
+
+@app.route('/subject_exam/<subj_id>')
+def subject_exam(subj_id):
+    if 'user' not in session: return redirect(url_for('index'))
+    
+    syllabus = get_syllabus()
+    subject = next((s for s in syllabus.get('subjects', []) if s['id'] == subj_id), None)
+    
+    if not subject:
+        return redirect(url_for('dashboard'))
+    
+    all_questions = []
+    difficulty = session.get('difficulty', 'Moderate')
+    
+    # Target: 5 questions per unit, 5 units = 25 questions
+    units = subject.get('units', [])[:5] 
+    
+    q_counter = 0 # Global seed for unique mock generation
+    for unit in units:
+        topics = unit.get('topics', [])
+        if not topics: continue
+        
+        unit_qs = []
+        # Distribute 5 questions across topics in this unit
+        for i, topic in enumerate(topics):
+            if len(unit_qs) >= 5: break
+            
+            # How many questions to take from this topic
+            needed = 1
+            if i == len(topics) - 1: # Last topic gets remainder
+                needed = 5 - len(unit_qs)
+            elif len(unit_qs) + (len(topics) - i) <= 5: 
+                needed = 1 # Take at least 1 per topic if space allows
+            
+            if needed <= 0: continue
+            
+            qs = ai.generate_quiz(topic['name'], difficulty, num_questions=needed, global_seed=q_counter)
+            unit_qs.extend(qs)
+            q_counter += needed
+            
+        all_questions.extend(unit_qs[:5])
+
+    # Ensure we have exactly 25 if possible
+    final_questions = all_questions[:25]
+    for i, q in enumerate(final_questions):
+        q['id'] = i + 1 # Re-index for UI
+        
+    return render_template('quiz.html', 
+                           topic_id=subj_id, 
+                           questions=final_questions, 
+                           quiz_type='semester',
+                           subject_name=subject['name'])
 
 @app.route('/submit_quiz', methods=['POST'])
 def submit_quiz():
@@ -142,6 +253,54 @@ def submit_quiz():
     
     return jsonify({"status": "success", "redirect": url_for('analysis')})
 
+# --- Professor Routes ---
+
+@app.route('/professor/dashboard')
+def professor_dashboard():
+    if 'user' not in session or session['user'].get('role') != 'professor':
+        return redirect(url_for('index'))
+    return render_template('professor_dashboard.html', user=session['user'])
+
+@app.route('/professor/analytics')
+def class_analytics():
+    if 'user' not in session or session['user'].get('role') != 'professor':
+        return redirect(url_for('index'))
+    
+    from data_manager import get_class_analytics
+    analytics = get_class_analytics()
+    return render_template('class_analytics.html', analytics=analytics)
+
+@app.route('/professor/upload_syllabus', methods=['POST'])
+def upload_syllabus():
+    if 'user' not in session or session['user'].get('role') != 'professor':
+        return jsonify({"error": "Unauthorized"}), 401
+    
+    file = request.files.get('syllabus')
+    if file and file.filename.endswith('.json'):
+        file.save(os.path.join('data', 'syllabus.json'))
+        
+        # Update metadata
+        from datetime import datetime
+        meta = {"last_updated": datetime.now().strftime("%d %b %Y, %H:%M")}
+        save_json('syllabus_meta.json', meta)
+        
+        return redirect(url_for('professor_dashboard'))
+    return "Invalid file format", 400
+
+@app.route('/chatbot')
+def chatbot():
+    if 'user' not in session: return redirect(url_for('index'))
+    return render_template('chatbot.html')
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    if 'user' not in session: return jsonify({"error": "Unauthorized"}), 401
+    user_query = request.json.get('message')
+    if not user_query: return jsonify({"response": "I didn't catch that. Could you repeat your question?"})
+    
+    response = ai.get_chat_response(user_query)
+    return jsonify({"response": response})
+
 @app.route('/analysis')
 def analysis():
     if 'user' not in session: return redirect(url_for('index'))
@@ -156,7 +315,42 @@ def analysis():
     
     analysis_result = ai.analyze_performance(scores)
     
-    return render_template('analysis.html', analysis=analysis_result, scores=progress.get('quiz_scores', {}))
+    # Calculate readiness for analysis page too
+    subjects_data = []
+    syllabus = get_syllabus()
+    topics_completed = progress.get('topics_completed', [])
+    quiz_scores_map = progress.get('quiz_scores', {})
+    
+    for subj in syllabus.get('subjects', []):
+        subj_total = 0
+        subj_completed = 0
+        subj_score_sum = 0
+        subj_quizzes = 0
+        for unit in subj.get('units', []):
+            for t in unit.get('topics', []):
+                subj_total += 1
+                if t['id'] in topics_completed: subj_completed += 1
+                if t['id'] in quiz_scores_map:
+                    qs = quiz_scores_map[t['id']]
+                    if qs['total'] > 0:
+                        subj_score_sum += (qs['score'] / qs['total']) * 100
+                        subj_quizzes += 1
+        
+        coverage_score = (subj_completed / subj_total * 50) if subj_total > 0 else 0
+        perf_score = (subj_score_sum / subj_quizzes * 0.5) if subj_quizzes > 0 else 0
+        readiness_score = int(coverage_score + perf_score)
+        
+        status = "Needs Improvement"
+        status_color = "#ef4444" 
+        if readiness_score >= 80: status, status_color = "Exam Ready", "#22c55e"
+        elif readiness_score >= 60: status, status_color = "Moderate", "#f59e0b"
+            
+        subjects_data.append({**subj, "readiness": readiness_score, "status": status, "status_color": status_color})
+    
+    return render_template('analysis.html', 
+                           analysis=analysis_result, 
+                           scores=progress.get('quiz_scores', {}),
+                           subjects=subjects_data)
 
 @app.route('/semester_prep')
 def semester_prep():
@@ -209,14 +403,29 @@ def mock_exam():
     # Generate a random mixed quiz from all subjects
     # For demo, just picking first topic of first 3 subjects
     syllabus = get_syllabus()
+    all_topics = []
+    for subj in syllabus.get('subjects', []):
+        for unit in subj.get('units', []):
+            for t in unit.get('topics', []):
+                all_topics.append(t['name'])
+    
+    # Shuffle and pick topics to get 25 questions
+    import random
+    random.shuffle(all_topics)
+    
     questions = []
-    for subj in syllabus.get('subjects', [])[:3]:
-        for unit in subj.get('units', [])[:1]:
-            if unit.get('topics'):
-                q = ai.generate_quiz(unit['topics'][0]['name'], "Hard")
-                if q: questions.append(q[0]) # Take top 1 question from each
+    # Try to get 1 question from each unique topic until we have 25
+    for topic_name in all_topics:
+        if len(questions) >= 25: break
+        qs = ai.generate_quiz(topic_name, "Hard", num_questions=1)
+        if qs: questions.append(qs[0])
+    
+    # If still short, supplement
+    if len(questions) < 25:
+        more = ai.generate_quiz("General Knowledge", "Hard", num_questions=(25 - len(questions)))
+        questions.extend(more)
             
-    return render_template('quiz.html', topic_id="mock_final", questions=questions)
+    return render_template('quiz.html', topic_id="mock_final", questions=questions, quiz_type='semester')
 
 def user_id(user_obj):
     # Helper to get the key from the dict. 

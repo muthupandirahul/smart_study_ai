@@ -28,8 +28,14 @@
             {% if session.get('user') %}
             <nav>
                 <ul>
+                    {% if session.get('user')['role'] == 'professor' %}
+                    <li><a href="{{ url_for('professor_dashboard') }}">Prof Dashboard</a></li>
+                    <li><a href="{{ url_for('class_analytics') }}">Class Analytics</a></li>
+                    {% else %}
                     <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('chatbot') }}">AI Assistant 🤖</a></li>
                     <li><a href="{{ url_for('analysis') }}">My Progress</a></li>
+                    {% endif %}
                     <li><a href="{{ url_for('settings') }}">Settings</a></li>
                     <li><a href="{{ url_for('logout') }}" style="color: #ff6b6b;">Logout</a></li>
                 </ul>

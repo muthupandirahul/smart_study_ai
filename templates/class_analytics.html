@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel">
+    <h1>Class Analytics 📊</h1>
+    <p>Detailed performance report for all enrolled students.</p>
+
+    <div class="card" style="margin-top: 20px; overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="border-bottom: 2px solid #333;">
+                    <th style="padding: 12px;">Roll No</th>
+                    <th style="padding: 12px;">Student Name</th>
+                    <th style="padding: 12px;">Topics Completed</th>
+                    <th style="padding: 12px;">Avg. Performance</th>
+                    <th style="padding: 12px;">Exam Readiness</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for std in analytics %}
+                <tr style="border-bottom: 1px solid #222;">
+                    <td style="padding: 12px;">{{ std.roll }}</td>
+                    <td style="padding: 12px; font-weight: bold;">{{ std.name }}</td>
+                    <td style="padding: 12px;">{{ std.completed }}</td>
+                    <td style="padding: 12px;">{{ std.performance }}%</td>
+                    <td style="padding: 12px;">
+                        {% if std.performance >= 80 %}
+                        <span style="color: #22c55e;">🟢 Exam Ready</span>
+                        {% elif std.performance >= 60 %}
+                        <span style="color: #f59e0b;">🟡 Moderate</span>
+                        {% else %}
+                        <span style="color: #ef4444;">🔴 Needs Improvement</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if not analytics %}
+        <p style="text-align: center; margin-top: 20px; color: #666;">No student data available yet.</p>
+        {% endif %}
+    </div>
+
+    <div style="margin-top: 30px;">
+        <a href="{{ url_for('professor_dashboard') }}" class="btn">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

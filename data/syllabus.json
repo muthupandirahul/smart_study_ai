@@ -1115,6 +1115,23 @@
                     ]
                 }
             ]
+        },
+        {
+            "id": "2343",
+            "name": "mobile technology",
+            "units": [
+                {
+                    "id": "2343_u1",
+                    "name": "Unit 1",
+                    "topics": [
+                        {
+                            "id": "2343_u1_t1",
+                            "name": "introduction",
+                            "difficulty": "Moderate"
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }

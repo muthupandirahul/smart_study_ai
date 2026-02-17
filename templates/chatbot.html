@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel" style="max-width: 800px; height: 80vh; display: flex; flex-direction: column; margin: 0 auto;">
+    <div style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 20px;">
+        <h2 style="margin: 0;">AI Study Assistant 🤖</h2>
+        <p style="font-size: 0.85rem; color: #888; margin: 5px 0 0 0;">Ask me anything about your syllabus subjects or
+            topics.</p>
+    </div>
+
+    <!-- Chat Area -->
+    <div id="chat-messages"
+        style="flex: 1; overflow-y: auto; padding-right: 10px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 15px;">
+        <div class="chat-bubble bot">
+            Hello! I'm your AI study companion. How can I help you today?
+        </div>
+    </div>
+
+    <!-- Input Area -->
+    <div style="display: flex; gap: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+        <input type="text" id="user-input" placeholder="Ask a doubt... (e.g., 'Explain IaaS')"
+            style="flex: 1; padding: 12px 15px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid #444; color: white; outline: none;">
+        <button id="send-btn" class="btn" onclick="sendMessage()" style="padding: 0 25px;">Send</button>
+    </div>
+</div>
+
+<style>
+    .chat-bubble {
+        max-width: 80%;
+        padding: 12px 18px;
+        border-radius: 15px;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .chat-bubble.bot {
+        align-self: flex-start;
+        background: rgba(99, 102, 241, 0.15);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        color: #e2e8f0;
+        border-bottom-left-radius: 2px;
+    }
+
+    .chat-bubble.user {
+        align-self: flex-end;
+        background: #6366f1;
+        color: white;
+        border-bottom-right-radius: 2px;
+    }
+
+    #chat-messages::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    #chat-messages::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+    }
+</style>
+
+<script>
+    const chatMessages = document.getElementById('chat-messages');
+    const userInput = document.getElementById('user-input');
+
+    function sendMessage() {
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        // Append user message
+        appendMessage('user', text);
+        userInput.value = '';
+
+        // Typing indicator
+        const typingId = 'typing-' + Date.now();
+        const typingBubble = document.createElement('div');
+        typingBubble.id = typingId;
+        typingBubble.className = 'chat-bubble bot';
+        typingBubble.textContent = 'Thinking...';
+        chatMessages.appendChild(typingBubble);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        fetch('/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text })
+        })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById(typingId).remove();
+                appendMessage('bot', data.response);
+            });
+    }
+
+    function appendMessage(role, text) {
+        const div = document.createElement('div');
+        div.className = `chat-bubble ${role}`;
+        div.textContent = text;
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+</script>
+{% endblock %}
